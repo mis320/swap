@@ -62,31 +62,31 @@ const tokenList = [
         token: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
         name: 'BNB',
         decimals: '18',
-        url: 'https://pancakeswap.finance/images/tokens/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c.png'
+        url: 'https://mis320.github.io/swap/img/BNB.png'
     },
     {
         token: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
         name: 'WBNB',
         decimals: '18',
-        url: 'https://pancakeswap.finance/images/tokens/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c.png'
+        url: 'https://mis320.github.io/swap/img/BNB.png'
     },
     {
         token: '0x55d398326f99059fF775485246999027B3197955',
         name: 'USDT',
         decimals: '18',
-        url: 'https://pancakeswap.finance/images/tokens/0x55d398326f99059fF775485246999027B3197955.png'
+        url: 'https://mis320.github.io/swap/img/USDT.png'
     },
     {
         token: '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56',
         name: 'BUSDT',
         decimals: '18',
-        url: 'https://pancakeswap.finance/images/tokens/0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56.png'
+        url: 'https://mis320.github.io/swap/img/BUSDT.png'
     },
     {
         token: '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d',
         name: 'USDC',
         decimals: '18',
-        url: 'https://tokens.pancakeswap.finance/images/0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d.png'
+        url: 'https://mis320.github.io/swap/img/USDC.png'
     }
 ]
 
