@@ -1,37 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<script>
-    let  web3
-    let isInput = null
-    let K = 1
-    let msg = ''
-    let chain = '56'
-    function $set(p1, p2) {
-        let t = document.getElementById(p1);
-        if (
-            t.nodeName.toUpperCase() == 'SPAN' ||
-            t.nodeName.toUpperCase() == 'P'
 
-        ) {
-            t.innerHTML = p2
-        } else if (t.nodeName.toUpperCase() == 'IMG') {
-            t.src = p2
-        } else {
-            t.value = p2
-        }
-
-    }
-    function $get(p1) {
-        let t = document.getElementById(p1);
-
-        if (t.nodeName.toUpperCase() != 'SPAN') {
-            return t.value
-        } else {
-            return t.innerHTML
-        }
-
-    }
-</script>
 
 <head>
     <meta charset="UTF-8">
@@ -245,9 +214,42 @@
         </div> -->
     </div>
 </body>
+
+<script>
+    let  web3
+    let isInput = null
+    let K = 1
+    let msg = ''
+    let chain = '56'
+    function $set(p1, p2) {
+        let t = document.getElementById(p1);
+        if (
+            t.nodeName.toUpperCase() == 'SPAN' ||
+            t.nodeName.toUpperCase() == 'P'
+
+        ) {
+            t.innerHTML = p2
+        } else if (t.nodeName.toUpperCase() == 'IMG') {
+            t.src = p2
+        } else {
+            t.value = p2
+        }
+
+    }
+    function $get(p1) {
+        let t = document.getElementById(p1);
+
+        if (t.nodeName.toUpperCase() != 'SPAN') {
+            return t.value
+        } else {
+            return t.innerHTML
+        }
+
+    }
+</script>
 <script>
     let approveDOM = document.getElementById("approve")
-    const tgbUrl = 'https://i01piccdn.sogoucdn.com/745e822a45937d53'
+    const tgbUrl = 'https://mis320.github.io/swap/img/TGB.jpg'
 
     function initTokenList(tokenInfopara) {
         let t01 = localStorage.getItem('localTokenList')
