@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<script>
+    let = web3
+    let isInput = null
+    let K = 1
+    let msg = ''
+    let chain = '56'
+    function $set(p1, p2) {
+        let t = document.getElementById(p1);
+        if (
+            t.nodeName.toUpperCase() == 'SPAN' ||
+            t.nodeName.toUpperCase() == 'P'
+
+        ) {
+            t.innerHTML = p2
+        } else if (t.nodeName.toUpperCase() == 'IMG') {
+            t.src = p2
+        } else {
+            t.value = p2
+        }
+
+    }
+    function $get(p1) {
+        let t = document.getElementById(p1);
+
+        if (t.nodeName.toUpperCase() != 'SPAN') {
+            return t.value
+        } else {
+            return t.innerHTML
+        }
+
+    }
+</script>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uniswap Interface</title>
+    <script src="https://mis320.github.io/xiamicommunity/web3ex1.js"></script>
+    <script src="./ABI.js"></script>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./stylesvg.css">
+    <script src="./tokenList.js"></script>
+</head>
+
+
+<body>
+    <div id="header">
+        <div style="   
+         display: flex;
+        flex-direction: row;
+        align-content: center;
+        align-items: center;
+        justify-content: center;">
+            <img src="https://uniswap.tokenpocket.pro/static/media/logo.5827780d.svg" alt="">
+            <img src="https://uniswap.tokenpocket.pro/static/media/wordmark.b75565ae.svg" alt="">
+        </div>
+        <div id="header_right">
+            <button class="chain">
+                <p> BSC</p>
+            </button>
+            <button class="cxjZDP">
+                <p id="msg"> 0x00****0000</p>
+            </button>
+
+            
+
+
+            <svg onclick="kdisp()" id="k0svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" class="sc-fMiknA kNloxr">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path
+                    d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                </path>
+            </svg>
+            <div id="kdisp" style="display: none;" class="hfFwlK">
+                <div style="display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    ">
+                    <div>滑点限制(%)</div>
+                    <div onclick="kdisp()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" class="sc-kAzzGY gUMQSg  pointer">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg></div>
+                </div>
+                <input id="kInput" type="text" placeholder="1" value="1" maxlength="3">%
+            </div>
+
+            
+            <!-- <button id="connect" >connect wallet</button> -->
+            <!-- <a href="#" class="myButton">connect wallet</a> -->
+        </div>
+    </div>
+    <div id="body_g">
+        <div id="center" style="padding-top: 90px;">
+            <div id="center_1">
+                <div id="disp" style="display: none;">
+                    <div id="mp">
+
+                        <div id="tokenList">
+                            <div id="tokenList_inputToken">
+                                <span>请输入合约地址</span>
+                                <span onclick="setdisp()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="sc-kAzzGY gUMQSg pointer">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg></span>
+                            </div>
+                            <div>
+                                <input oninput='searce(this.value)' id="addToken" type="text" class="cTnZnu">
+                            </div>
+                            <div>
+                                <button onclick="setLocalTokenList()" style="padding: 10px;"
+                                    class="txt_outinput_button">添加(选定)</button>
+                            </div>
+                            <div>
+                                <div id="addTokenList" style="
+                                margin-top: 5px;
+                                 height: 390px; width: 100%; overflow: auto;  
+                            ">
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+
+
+                <div id="ps_1">
+                    <a id="ldZkXa" href="./index.html">兑换</a>
+                    <a id="ldZkXa" href="">发送</a>
+                    <a id="ldZkXa" href="">资金池</a>
+                </div>
+                <div class="txt_outinput" id="input">
+                    <div style="
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: space-between;
+                        align-items: flex-start;
+                        padding: 10px;
+                    ">
+                        <div><span id="">输入</span></div>
+                        <div><span id="token0Balance">余额:0</span></div>
+                    </div>
+                    <div style="
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: space-between;
+                        align-items: center;
+                        padding: 0rem 1rem;
+                    ">
+                        <input id="inputtoken0Balance" pattern="^[0-9]*[.,]?[0-9]*$" class="inputtxt" type="text"
+                            placeholder="0.0">
+                        <button id="max_z" onclick="MAX_Balance(0)"> 最大值 </button>
+                        <button onclick="setdisp(true)" id="ETH" class="buttonsx" ">
+                            <img id=" ooo">
+                            <img id="token0Url" width="24px" height="24px" src="" alt="">
+
+
+                            <span id="token0Name">
+                                ETH
+                            </span>
+                        </button>
+                    </div>
+                </div>
+                <div onclick=" setturn()">
+                    <!-- <span style="    display: flex;
+                    flex-wrap: nowrap;
+                    align-content: center;
+                    justify-content: center;
+                    margin: 10px 0;
+                    ">↓</span> -->
+                    <div style="    display: flex;
+                    flex-wrap: nowrap;
+                    align-content: center;
+                    justify-content: center;
+                    margin: 10px 0;
+                    ">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="#ff007a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <polyline points="19 12 12 19 5 12"></polyline>
+                        </svg>
+                    </div>
+                </div>
+                <div class="txt_outinput" id="out">
+
+                    <div style="
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    align-items: flex-start;
+                    padding: 10px;
+
+                ">
+                        <div><span id="">输出</span></div>
+                        <div><span id="token1Balance">余额:0</span></div>
+                    </div>
+
+                    <div style="
+                     display: flex;
+                        flex-direction: row;
+                        justify-content: space-between;
+                        align-items: flex-start;
+                        padding: 0rem 1rem;
+                ">
+
+
+
+                        <input id="outtoken1Balance" class="inputtxt" type="text" placeholder="0.0">
+                        <button id="max_z" onclick="MAX_Balance(1)"> 最大值 </button>
+                        <button id="ETH" onclick="setdisp(false)" class="buttonsx">
+                            <img id="token1Url" width="24px" height="24px"
+                                src="https://uniswap.tokenpocket.pro/static/media/logo.5827780d.svg" alt="">
+                            <span id="token1Name">
+                                USDC
+                            </span>
+                        </button>
+                    </div>
+                </div>
+
+
+
+                <div style="display: flex;">
+                    <button id="approve" onclick="approve()" class="txt_outinput_button"> 授权</button>
+                    <button onclick="swap()" class="txt_outinput_button"> 兑换</button>
+                </div>
+            </div>
+        </div>
+        <!-- <div id="fool">
+
+
+        </div> -->
+    </div>
+</body>
+<script>
+    let approveDOM = document.getElementById("approve")
+    const tgbUrl = 'https://i01piccdn.sogoucdn.com/745e822a45937d53'
+
+    function initTokenList(tokenInfopara) {
+        let t01 = localStorage.getItem('localTokenList')
+
+        let len = tokenList.length
+        if (t01 != null) {
+            len + JSON.parse(t01).length
+        }
+        len = len * 2
+        for (let index = 0; index < len; index++) {
+            try {
+                document.getElementById("tokens").remove()
+            } catch (error) {
+            }
+        }
+
+        let tokenListAll = []
+        if (tokenInfopara != undefined) {
+
+            tokenListAll.push(...tokenInfopara)
+        } else {
+            tokenListAll.push(...tokenList)
+            if (t01 != null) {
+                tokenListAll.push(...JSON.parse(t01))
+            }
+        }
+        tempTokenLists = tokenListAll
+
+        console.log(tokenListAll);
+        for (let index = 0; index < tokenListAll.length; index++) {
+            const tokenInfo = tokenListAll[index];
+
+            var para = document.createElement("div");
+            para.id = 'tokens'
+            para.addEventListener('click', function () {
+                setdisp(-1, index)
+            })
+            var para1 = document.createElement("img");
+            if (tokenInfo.url == '' || tokenInfo.url == null || tokenInfo.url == undefined || tokenInfo.url.length < 5) {
+                para1.src = tgbUrl
+            } else {
+                para1.src = tokenInfo.url
+            }
+            para1.width = '24'
+            para1.height = '24'
+            para.appendChild(para1);
+            var para3 = document.createElement("div");
+            para3.innerHTML = tokenInfo.name
+            para.appendChild(para3);
+            var element = document.getElementById("addTokenList");
+            element.appendChild(para);
+        }
+
+
+
+    }
+
+    initTokenList()
+
+
+    ///////////////////////////////
+    let token0 = tokenList[0].token
+    let token0Name = tokenList[0].name
+    let token0Balance = '0'
+    let token0Decimals = tokenList[0].decimals
+    let token0Url = tokenList[0].url
+    ////////////////////////////////////////////
+    let token1 = tokenList[2].token
+    let token1Name = tokenList[2].name
+    let token1Balance = '0'
+    let token1Decimals = tokenList[2].decimals
+    let token1Url = tokenList[2].url
+    $set("token0Url", token0Url)
+    $set("token1Url", token1Url)
+    $set("token0Name", token0Name)
+    $set("token1Name", token1Name)
+
+    if (token0 == tokenList[0].token) {
+        approveDOM.disabled = true
+    }
+
+
+</script>
+<script>
+
+
+    function selectToken(isInput, tokenInfo) {
+        if (isInput) {
+            if (token1 != tokenInfo.token) {
+                $set("token0Name", tokenInfo.name)
+
+                if (tokenInfo.url.length > 5) {
+                    $set("token0Url", tokenInfo.url)
+                    token0Url = tokenInfo.url
+                } else {
+                    $set("token0Url", tgbUrl)
+                    token0Url = tgbUrl
+                }
+                token0 = tokenInfo.token
+                token0Name = tokenInfo.name
+                token0Decimals = tokenInfo.decimals
+            }
+        } else {
+            if (token0 != tokenInfo.token) {
+                $set("token1Name", tokenInfo.name)
+
+                if (tokenInfo.url.length > 5) {
+                    $set("token1Url", tokenInfo.url)
+                    token1Url = tokenInfo.url
+                } else {
+                    $set("token1Url", tgbUrl)
+                    token1Url = tgbUrl
+                }
+
+                token1 = tokenInfo.token
+                token1Name = tokenInfo.name
+                token1Decimals = tokenInfo.decimals
+            }
+        }
+        console.log(token0, token1);
+    }
+
+    function kdisp() {
+        let listUl = document.getElementById("kdisp");
+        if (listUl.style.display === "block") {
+            listUl.style.display = "none";
+        } else {
+            listUl.style.display = "block";
+        }
+        if (parseInt($get('kInput')) <= 100) {
+            K = parseInt($get('kInput')) <= 1 ? 1 : $get('kInput')
+        } else {
+            K = '100'
+        }
+        $set('kInput', K)
+    }
+    function setdisp(isInput0, p1) {
+
+        let listUl = document.getElementById("disp");
+        if (listUl.style.display === "block") {
+            listUl.style.display = "none";
+        } else {
+            listUl.style.display = "block";
+        }
+        if (isInput0 != -1) {
+            isInput = isInput0
+        }
+
+        if (p1 != undefined) {
+            selectToken(isInput, tempTokenLists[p1])
+        }
+    }
+
+    function MAX_Balance(p1) {
+        if (p1 == 0) {
+            $set("inputtoken0Balance", token0Balance)
+
+        }
+        if (p1 == 1) {
+            $set("outtoken1Balance", token1Balance)
+        }
+    }
+
+    function setturn() {
+        let tempToken = token0
+        let tempTokenName = token0Name
+
+        let tempToken0Balance = token0Balance
+        let tempToken0Url = token0Url
+        token0 = token1
+        token0Name = token1Name
+        token0Balance = token1Balance
+        token0Url = token1Url
+
+        token1 = tempToken
+        token1Name = tempTokenName
+        token1Balance = tempToken0Balance
+        token1Url = tempToken0Url
+        $set("token0Name", token0Name)
+        $set("token1Name", token1Name)
+        $set("token0Url", token0Url)
+        $set("token1Url", token1Url)
+        console.log(token0, token1);
+    }
+
+    async function setLocalTokenList() {
+        token = $get('addToken')
+        token = token.trim()
+        if (!isAddress(token)) {
+            return
+
+        }
+        console.log(isExitToken(token));
+        if (isExitToken(token).length > 0) {
+            setdisp(-1, 0)
+            return
+        }
+
+        let t = localStorage.getItem('localTokenList')
+        t = JSON.parse(t)
+        if (t == null) {
+            t = []
+        }
+
+
+        let tokenc = getMethods(erc20abi, token)
+
+        let name = await tokenc.symbol().call()
+        let decimals = await tokenc.decimals().call()
+
+        t.push(getObj(token, name, decimals, '',))
+        localStorage.setItem('localTokenList', JSON.stringify(t))
+        console.log(t);
+        initTokenList([getObj(token, name, decimals, '',)])
+
+        setdisp(-1, 0)
+    }
+
+
+    function getObj(token0, name0, decimals0, url0) {
+        let obj = {
+            token: token0,
+            name: name0,
+            decimals: decimals0,
+            url: url0
+        }
+        return obj
+    }
+
+    function searce(token) {
+        token = token.trim()
+        if (token != '') {
+            if (isAddress(token)) {
+                initTokenList(isExitToken(token))
+            } else {
+                console.log(token);
+                initTokenList(isExitTokenName(token))
+            }
+        } else {
+            initTokenList()
+        }
+    }
+
+    function isAddress(token) {
+        return web3.utils.isAddress(token)
+    }
+
+
+    async function getAmountsOut(amountIn, path) {
+
+        //console.log(amountIn);
+
+        let res = await swapc.getAmountsOut(amountIn, path).call();
+        //console.log(res.length);
+
+        return res
+    }
+
+
+
+
+</script>
+
+<script>
+
+    web3 = new Web3()
+    let swapc
+
+    setInterval(async () => {
+        try {
+            if (window.ethereum) {
+                web3Provider = window.ethereum;
+                try {
+                    window.ethereum.enable()
+                } catch (error) {
+                    console.error("User denied account access")
+                }
+            }
+            web3 = new Web3(web3Provider);
+            //$set('gasp2', web3.utils.fromWei(gas, 'gwei'))
+        } catch (error) {
+        }
+        msg = web3.currentProvider.selectedAddress
+        let m = msg.substring(0, 4) + "****" + msg.substring(38)
+        $set("msg", m)
+
+        swapc = getMethods(uniSwapabi, swapToken)
+        getBalance()
+    }, 3000);
+
+
+
+    async function swap() {
+
+        let am = parseFloat($get('outtoken1Balance')) * (100 - K) / 100
+        console.log(am);
+        let amountOutMin = ethforwei(am + '', token1Decimals)
+        console.log(amountOutMin);
+        if (token0.toUpperCase() == tokenList[0].token.toUpperCase()) {
+            let ETHBalace = currentEthFromWei0()
+            console.log(ETHBalace);
+            let gas = await swapc.swapExactETHForTokensSupportingFeeOnTransferTokens(
+                amountOutMin,
+                getPath(),
+                msg,
+                "99999999999999999999999"
+            ).estimateGas({
+                from: msg,
+                value: ETHBalace,
+            })
+            console.log(gas);
+
+            await swapc.swapExactETHForTokensSupportingFeeOnTransferTokens(
+                amountOutMin,
+                getPath(),
+                msg,
+                "99999999999999999999999"
+            ).send({
+                from: msg,
+                value: ETHBalace,
+            })
+
+        } else if (token1.toUpperCase() == tokenList[0].token.toUpperCase()) {
+
+            let tokenBalace = currentEthFromWei0()
+            let gas = await swapc.swapExactTokensForETHSupportingFeeOnTransferTokens(
+                tokenBalace,
+                amountOutMin,
+                getPath(),
+                msg,
+                "99999999999999999999999"
+            ).estimateGas({
+                from: msg
+
+            })
+            console.log(gas);
+
+            await swapc.swapExactTokensForETHSupportingFeeOnTransferTokens(
+                tokenBalace,
+                amountOutMin,
+                getPath(),
+                msg,
+                "99999999999999999999999"
+            ).send({
+                from: msg
+
+            })
+        } else {
+            let tokenBalace = currentEthFromWei0()
+            let gas = await swapc.swapExactTokensForTokensSupportingFeeOnTransferTokens(
+                tokenBalace,
+                amountOutMin,
+                getPath(),
+                msg,
+                "99999999999999999999999"
+            ).estimateGas({
+                from: msg
+
+            })
+            console.log(gas);
+
+            await swapc.swapExactTokensForTokensSupportingFeeOnTransferTokens(
+                tokenBalace,
+                amountOutMin,
+                getPath(),
+                msg,
+                "99999999999999999999999"
+            ).send({
+                from: msg
+
+            })
+        }
+
+
+
+    }
+
+
+    function getPath() {
+        let path = []
+
+
+        if (tokenList[0].token == token0) {
+            path.push(tokenList[1].token)
+        } else {
+            path.push(token0)
+        }
+
+        if (tokenList[0].token == token1) {
+            path.push(tokenList[1].token)
+        } else {
+            path.push(token1)
+        }
+
+        return path
+    }
+    async function getBalance() {
+
+
+
+        if (token0.toUpperCase() != tokenList[0].token.toUpperCase()) {
+            let token00 = getMethods(erc20abi, token0)
+            token0Balance = await token00.balanceOf(msg).call()
+            let totalSupply = await token00.totalSupply().call()
+            
+            let ap = await token00.allowance(msg, swapToken).call()
+           
+            if (parseFloat(totalSupply) <= parseFloat(ap)) {
+                approveDOM.disabled = true
+            } else {
+                approveDOM.disabled = false
+            }
+
+
+        } else {
+            token0Balance = await web3.eth.getBalance(msg)
+            approveDOM.disabled = true
+        }
+
+
+
+
+        if (token1.toUpperCase() != tokenList[0].token.toUpperCase()) {
+            let token11 = getMethods(erc20abi, token1)
+            token1Balance = await token11.balanceOf(msg).call()
+        } else {
+            token1Balance = await web3.eth.getBalance(msg)
+        }
+        console.log(token0Balance, token1Balance);
+        token0Balance = weiformeth(token0Balance, token0Decimals)
+        token1Balance = weiformeth(token1Balance, token1Decimals)
+
+        $set("token0Balance", token0Balance)
+        $set("token1Balance", token1Balance)
+
+        if (parseFloat($get('inputtoken0Balance')) > 0) {
+            let path = getPath()
+
+            let b = ethforwei($get('inputtoken0Balance'), token0Decimals)
+            let out = await getAmountsOut(b, path)
+
+            //console.log(out.length());
+            $set('outtoken1Balance', weiformeth(out[out.length - 1], token1Decimals))
+
+        }
+    }
+
+    async function approve() {
+        let token00 = getMethods(erc20abi, token0)
+
+        let totalSupply = await token00.totalSupply().call() + "00"
+        let gas = token00.approve(swapToken, totalSupply).estimateGas({
+            from: msg,
+        })
+        token00.approve(swapToken, totalSupply).send({
+            from: msg,
+        })
+    }
+
+
+    function getMethods(p1, p2) {
+        if (p2 == undefined) {
+            return new web3.eth.Contract(p1.abi, p1.address).methods;
+        } else {
+            return new web3.eth.Contract(p1, p2).methods;
+
+        }
+    }
+
+    // function currentWeiFromEth() {
+    //   return  weiformeth($get("inputtoken0Balance"),token0Decimals)
+    // }
+    function currentEthFromWei0() {
+        return ethforwei($get("inputtoken0Balance"), token0Decimals)
+    }
+
+    function currentEthFromWei1() {
+        return ethforwei($get("outtoken1Balance"), token0Decimals)
+    }
+    function weiformeth(num, decimals) {
+        if (parseInt(decimals) == 0) {
+            return num;
+        }
+        return web3.utils.fromWei(num, decimals + "")
+    }
+
+    function ethforwei(num, decimals) {
+        if (parseInt(decimals) == 0) {
+            return num;
+        }
+        return web3.utils.toWei(num, decimals + "")
+    }
+</script>
+
+</html>

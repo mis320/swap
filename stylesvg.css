@@ -1,0 +1,109 @@
+#k0svg {
+    cursor: pointer;
+    position: relative;
+    width: 100%;
+    border: none;
+    margin: 0px;
+    height: 35px;
+    background-color: rgb(237, 238, 242);
+    padding: 0.15rem 0.5rem;
+    border-radius: 0.5rem;
+}
+
+#kInput {
+    color: rgb(0, 0, 0);
+    -webkit-box-align: center;
+    align-items: center;
+    min-width: 55px;
+    border-radius: 36px;
+    font-size: 12px;
+    border: 1px solid rgb(237, 238, 242);
+    outline: none;
+    background: rgb(255, 255, 255);
+    height: 2rem;
+    position: relative;
+    padding: 0px 0.75rem;
+}
+
+#tokenList_inputToken {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.buttonsx {
+    -webkit-box-align: center;
+    align-items: center;
+    height: 2.2rem;
+    font-size: 20px;
+    font-weight: 500;
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    border-radius: 12px;
+    box-shadow: none;
+    outline: none;
+    cursor: pointer;
+    user-select: none;
+    border: none;
+    padding: 0px 0.5rem;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+}
+
+.cxjZDP {
+    text-align: center;
+    outline: none;
+    -webkit-box-pack: center;
+    justify-content: center;
+   
+    display: flex;
+    flex-flow: row nowrap;
+    width: 100%;
+    -webkit-box-align: center;
+    align-items: center;
+   
+    border-radius: 12px;
+    cursor: pointer;
+    user-select: none;
+    background-color: rgb(247, 248, 250);
+    border: 1px solid rgb(237, 238, 242);
+    color: rgb(0, 0, 0);
+    font-weight: 500;
+
+
+   
+   
+   
+}
+
+
+.chain{
+    box-sizing: border-box;
+   
+   
+    background-color: rgba(243, 132, 30, 0.05);
+    color: rgb(243, 132, 30);
+    font-weight: 500;
+    width: fit-content;
+    border-radius: 12px;
+    border: 1px solid rgb(237, 238, 242);
+}
+
+
+
+.pointer{
+    cursor: pointer;
+}
+
+
+
+
+
+
+
