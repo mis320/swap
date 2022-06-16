@@ -8,10 +8,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Uniswap Interface</title>
     <script src="https://mis320.github.io/xiamicommunity/web3ex1.js"></script>
+    <script src="./ethjs-unit.min.js"></script>
     <script src="./ABI.js"></script>
     <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="./stylesvg.css">
     <script src="./tokenList.js"></script>
+
 </head>
 
 
@@ -28,13 +30,13 @@
         </div>
         <div id="header_right">
             <button class="chain">
-                <p> BSC</p>
+                <p id="chain"> BSC</p>
             </button>
             <button class="cxjZDP">
                 <p id="msg"> 0x00****0000</p>
             </button>
 
-            
+
 
 
             <svg onclick="kdisp()" id="k0svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -58,10 +60,10 @@
                             <line x1="6" y1="6" x2="18" y2="18"></line>
                         </svg></div>
                 </div>
-                <input id="kInput" type="text" placeholder="1" value="1" maxlength="3">%
+                <input  oninput="setK()"  id="kInput" type="text" placeholder="1" value="2" maxlength="3">%
             </div>
 
-            
+
             <!-- <button id="connect" >connect wallet</button> -->
             <!-- <a href="#" class="myButton">connect wallet</a> -->
         </div>
@@ -108,9 +110,9 @@
 
 
                 <div id="ps_1">
-                    <a id="ldZkXa" >兑换</a>
+                    <a id="ldZkXa">兑换</a>
                     <a id="ldZkXa">发送</a>
-                    <a id="ldZkXa" >资金池</a>
+                    <a id="ldZkXa">资金池</a>
                 </div>
                 <div class="txt_outinput" id="input">
                     <div style="
@@ -135,7 +137,8 @@
                         <button id="max_z" onclick="MAX_Balance(0)"> 最大值 </button>
                         <button onclick="setdisp(true)" id="ETH" class="buttonsx" ">
                             <img id=" ooo">
-                            <img id="token0Url" width="24px" height="24px" src="" alt="">
+                            <img id="token0Url" width="24px" height="24px"
+                                src="https://mis320.github.io/swap/img/ETH.png" alt="">
 
 
                             <span id="token0Name">
@@ -192,9 +195,9 @@
                         <button id="max_z" onclick="MAX_Balance(1)"> 最大值 </button>
                         <button id="ETH" onclick="setdisp(false)" class="buttonsx">
                             <img id="token1Url" width="24px" height="24px"
-                                src="https://uniswap.tokenpocket.pro/static/media/logo.5827780d.svg" alt="">
+                                src="https://mis320.github.io/swap/img/USDT.png" alt="">
                             <span id="token1Name">
-                                USDC
+                                USDT
                             </span>
                         </button>
                     </div>
@@ -216,9 +219,9 @@
 </body>
 
 <script>
-    let  web3
+    let web3
     let isInput = null
-    let K = 1
+    let K = 2
     let msg = ''
     let chain = '56'
     function $set(p1, p2) {
@@ -252,17 +255,19 @@
     const tgbUrl = 'https://mis320.github.io/swap/img/TGB.jpg'
 
     function initTokenList(tokenInfopara) {
-        let t01 = localStorage.getItem('localTokenList')
 
-        let len = tokenList.length
-        if (t01 != null) {
-            len + JSON.parse(t01).length
+        let len = getCurrentTokenList().length * 2
+
+        if (len < 20) {
+            len = 100
         }
-        len = len * 2
+
+
         for (let index = 0; index < len; index++) {
             try {
                 document.getElementById("tokens").remove()
             } catch (error) {
+
             }
         }
 
@@ -271,17 +276,14 @@
 
             tokenListAll.push(...tokenInfopara)
         } else {
-            tokenListAll.push(...tokenList)
-            if (t01 != null) {
-                tokenListAll.push(...JSON.parse(t01))
-            }
+            tokenListAll.push(...getCurrentTokenList())
+
         }
         tempTokenLists = tokenListAll
 
         console.log(tokenListAll);
         for (let index = 0; index < tokenListAll.length; index++) {
             const tokenInfo = tokenListAll[index];
-
             var para = document.createElement("div");
             para.id = 'tokens'
             para.addEventListener('click', function () {
@@ -302,34 +304,26 @@
             var element = document.getElementById("addTokenList");
             element.appendChild(para);
         }
-
-
-
     }
 
     initTokenList()
 
 
     ///////////////////////////////
-    let token0 = tokenList[0].token
-    let token0Name = tokenList[0].name
+    let token0 = getCurrentTokenList()[0].token
+    let token0Name = getCurrentTokenList()[0].name
     let token0Balance = '0'
-    let token0Decimals = tokenList[0].decimals
-    let token0Url = tokenList[0].url
+    let token0Decimals = getCurrentTokenList()[0].decimals
+    let token0Url = getCurrentTokenList()[0].url
     ////////////////////////////////////////////
-    let token1 = tokenList[2].token
-    let token1Name = tokenList[2].name
+    let token1 = getCurrentTokenList()[2].token
+    let token1Name = getCurrentTokenList()[2].name
     let token1Balance = '0'
-    let token1Decimals = tokenList[2].decimals
-    let token1Url = tokenList[2].url
-    $set("token0Url", token0Url)
-    $set("token1Url", token1Url)
-    $set("token0Name", token0Name)
-    $set("token1Name", token1Name)
+    let token1Decimals = getCurrentTokenList()[2].decimals
+    let token1Url = getCurrentTokenList()[2].url
 
-    if (token0 == tokenList[0].token) {
-        approveDOM.disabled = true
-    }
+
+
 
 
 </script>
@@ -379,12 +373,30 @@
         } else {
             listUl.style.display = "block";
         }
+        setK()
+    }
+
+
+    function setK(){
+
+       
         if (parseInt($get('kInput')) <= 100) {
             K = parseInt($get('kInput')) <= 1 ? 1 : $get('kInput')
-        } else {
+
+            if (parseInt($get('kInput')) < 0) {
+                $set('kInput', K)
+            }
+        } else if (isNaN(parseInt($get('kInput')))) {
+            console.log('NaNNaNNaN');
+            K = '5'
+            //
+        }else{
             K = '100'
+            $set('kInput', K)
         }
-        $set('kInput', K)
+        //
+
+        console.log( K);
     }
     function setdisp(isInput0, p1) {
 
@@ -396,6 +408,7 @@
         }
         if (isInput0 != -1) {
             isInput = isInput0
+            initTokenList()
         }
 
         if (p1 != undefined) {
@@ -419,19 +432,24 @@
 
         let tempToken0Balance = token0Balance
         let tempToken0Url = token0Url
+        let tempToken0Decimals = token0Decimals
+
         token0 = token1
         token0Name = token1Name
         token0Balance = token1Balance
         token0Url = token1Url
+        token0Decimals = token1Decimals
 
         token1 = tempToken
         token1Name = tempTokenName
         token1Balance = tempToken0Balance
         token1Url = tempToken0Url
+        token1Decimals = tempToken0Decimals
         $set("token0Name", token0Name)
         $set("token1Name", token1Name)
         $set("token0Url", token0Url)
         $set("token1Url", token1Url)
+
         console.log(token0, token1);
     }
 
@@ -451,8 +469,18 @@
         let t = localStorage.getItem('localTokenList')
         t = JSON.parse(t)
         if (t == null) {
-            t = []
+
+            t = {
+
+            }
         }
+
+        if (t[parseInt(chain)] == null) {
+            t[parseInt(chain)] = []
+        }
+
+        console.log(t[parseInt(chain)]);
+
 
 
         let tokenc = getMethods(erc20abi, token)
@@ -460,7 +488,7 @@
         let name = await tokenc.symbol().call()
         let decimals = await tokenc.decimals().call()
 
-        t.push(getObj(token, name, decimals, '',))
+        t[parseInt(chain)].push(getObj(token, name, decimals, '',))
         localStorage.setItem('localTokenList', JSON.stringify(t))
         console.log(t);
         initTokenList([getObj(token, name, decimals, '',)])
@@ -509,8 +537,31 @@
     }
 
 
+    let isInit = false
+    function initSet() {
+        token0 = getCurrentTokenList()[0].token
+        token0Name = getCurrentTokenList()[0].name
+        token0Balance = '0'
+        token0Decimals = getCurrentTokenList()[0].decimals
+        token0Url = getCurrentTokenList()[0].url
+        ////////////////////////////////////////////
+        token1 = getCurrentTokenList()[2].token
+        token1Name = getCurrentTokenList()[2].name
+        token1Balance = '0'
+        token1Decimals = getCurrentTokenList()[2].decimals
+        token1Url = getCurrentTokenList()[2].url
 
 
+        $set("token0Url", token0Url)
+        $set("token1Url", token1Url)
+        $set("token0Name", token0Name)
+        $set("token1Name", token1Name)
+        if (token0 == getCurrentTokenList()[0].token) {
+            approveDOM.disabled = true
+        }
+
+        isInit = true
+    }
 </script>
 
 <script>
@@ -529,26 +580,35 @@
                 }
             }
             web3 = new Web3(web3Provider);
-            //$set('gasp2', web3.utils.fromWei(gas, 'gwei'))
+
         } catch (error) {
         }
         msg = web3.currentProvider.selectedAddress
         let m = msg.substring(0, 4) + "****" + msg.substring(38)
         $set("msg", m)
+        chain = web3.currentProvider.networkVersion
+        $set('chain', chains[parseInt(chain)])
 
-        swapc = getMethods(uniSwapabi, swapToken)
+
+        swapc = getMethods(uniSwapabi, getCurrentChainIdSWAP())
+
         getBalance()
+
+        if (!isInit) {
+            initSet()
+        }
     }, 3000);
 
 
 
     async function swap() {
-
-        let am = parseFloat($get('outtoken1Balance')) * (100 - K) / 100
-        console.log(am);
+        isExitNetWork()
+        //let am = (parseFloat($get('outtoken1Balance')) * (100 - K) / 100).toFixed(parseInt(token1Decimals))
+        let am = (parseFloat($get('outtoken1Balance')) * (100 - K) / 100)
+        console.log('am',am);
         let amountOutMin = ethforwei(am + '', token1Decimals)
         console.log(amountOutMin);
-        if (token0.toUpperCase() == tokenList[0].token.toUpperCase()) {
+        if (token0.toUpperCase() == getCurrentTokenList()[0].token.toUpperCase()) {
             let ETHBalace = currentEthFromWei0()
             console.log(ETHBalace);
             let gas = await swapc.swapExactETHForTokensSupportingFeeOnTransferTokens(
@@ -572,7 +632,7 @@
                 value: ETHBalace,
             })
 
-        } else if (token1.toUpperCase() == tokenList[0].token.toUpperCase()) {
+        } else if (token1.toUpperCase() == getCurrentTokenList()[0].token.toUpperCase()) {
 
             let tokenBalace = currentEthFromWei0()
             let gas = await swapc.swapExactTokensForETHSupportingFeeOnTransferTokens(
@@ -630,16 +690,14 @@
 
     function getPath() {
         let path = []
-
-
-        if (tokenList[0].token == token0) {
-            path.push(tokenList[1].token)
+        if (getCurrentTokenList()[0].token == token0) {
+            path.push(getCurrentTokenList()[1].token)
         } else {
             path.push(token0)
         }
 
-        if (tokenList[0].token == token1) {
-            path.push(tokenList[1].token)
+        if (getCurrentTokenList()[0].token == token1) {
+            path.push(getCurrentTokenList()[1].token)
         } else {
             path.push(token1)
         }
@@ -647,16 +705,21 @@
         return path
     }
     async function getBalance() {
+        isExitNetWork()
 
 
+        if (token0.toUpperCase() != getCurrentTokenList()[0].token.toUpperCase()) {
 
-        if (token0.toUpperCase() != tokenList[0].token.toUpperCase()) {
+
             let token00 = getMethods(erc20abi, token0)
             token0Balance = await token00.balanceOf(msg).call()
             let totalSupply = await token00.totalSupply().call()
-            
-            let ap = await token00.allowance(msg, swapToken).call()
-           
+
+            let ap = await token00.allowance(msg, getCurrentChainIdSWAP()).call()
+            console.log('Approve', ap);
+
+
+
             if (parseFloat(totalSupply) <= parseFloat(ap)) {
                 approveDOM.disabled = true
             } else {
@@ -666,13 +729,15 @@
 
         } else {
             token0Balance = await web3.eth.getBalance(msg)
+
+
             approveDOM.disabled = true
         }
 
 
 
 
-        if (token1.toUpperCase() != tokenList[0].token.toUpperCase()) {
+        if (token1.toUpperCase() != getCurrentTokenList()[0].token.toUpperCase()) {
             let token11 = getMethods(erc20abi, token1)
             token1Balance = await token11.balanceOf(msg).call()
         } else {
@@ -681,6 +746,8 @@
         console.log(token0Balance, token1Balance);
         token0Balance = weiformeth(token0Balance, token0Decimals)
         token1Balance = weiformeth(token1Balance, token1Decimals)
+
+        console.log(token0Decimals, token1Decimals);
 
         $set("token0Balance", token0Balance)
         $set("token1Balance", token1Balance)
@@ -698,13 +765,13 @@
     }
 
     async function approve() {
+        isExitNetWork()
         let token00 = getMethods(erc20abi, token0)
-
         let totalSupply = await token00.totalSupply().call() + "00"
-        let gas = token00.approve(swapToken, totalSupply).estimateGas({
+        let gas = token00.approve(getCurrentChainIdSWAP(), totalSupply).estimateGas({
             from: msg,
         })
-        token00.approve(swapToken, totalSupply).send({
+        token00.approve(getCurrentChainIdSWAP(), totalSupply).send({
             from: msg,
         })
     }
@@ -730,17 +797,11 @@
         return ethforwei($get("outtoken1Balance"), token0Decimals)
     }
     function weiformeth(num, decimals) {
-        if (parseInt(decimals) == 0) {
-            return num;
-        }
-        return web3.utils.fromWei(num, decimals + "")
+        return ethUnit.fromWei(num, decimals)
     }
 
     function ethforwei(num, decimals) {
-        if (parseInt(decimals) == 0) {
-            return num;
-        }
-        return web3.utils.toWei(num, decimals + "")
+        return ethUnit.toWei(num, decimals)
     }
 </script>
 
